@@ -1,0 +1,55 @@
+body {
+  /* background: url(images/colorless-bg.png) top center;
+  background-size: 100%; */
+  font-family: 'Montserrat', sans-serif !important;
+  background-color: #f8f9fa !important;
+}
+
+.container-extension {
+  /* background: url(images/table-bg.png) top center;
+  background-size: 100%; */
+}
+
+.container-extension * {
+  font-family: 'Montserrat', sans-serif;
+}
+
+.container-extension > p {
+  font-size: 40px;
+  text-align: center;
+}
+
+@media (min-width: 640px) {
+  .container-extension {
+    max-width:640px;
+  }
+}
+
+.row {
+  text-align: center;
+  font-size: 16px;
+}
+
+/*
+
+.col-4 {
+  background-color: purple;
+}
+
+.col-sm-4 {
+  background-color: green;
+}
+
+.col-md-4 {
+  background-color: red;
+}
+
+.col-lg-4 {
+  background-color: orange;
+}
+
+.col-xl-4 {
+  background-color: yellow;
+}
+
+*/
