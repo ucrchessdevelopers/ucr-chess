@@ -5,6 +5,8 @@ from django.db import models
 from django.db.models.signals import post_delete
 from django.dispatch import receiver
 
+from db_file_storage.model_utils import delete_file, delete_file_if_needed
+
 from django.utils.html import mark_safe
 
 from uuid import uuid4
@@ -19,21 +21,35 @@ class Player(models.Model):
     def __str__(self):
         return '{}'.format(self.name) + ': {}'.format(self.rating)
 
+
+class OfficerPicture(models.Model):
+    bytes = models.BinaryField()
+    filename = models.CharField(max_length=255)
+    mimetype = models.CharField(max_length=50)
+
 class Officer(models.Model):
     order = models.IntegerField(choices=[(1, 1), (2, 2), (3, 3), (4, 4), (5, 5), (6, 6), (7, 7), (8, 8), (9, 9), (10, 10), (11, 11), (11, 11), (12, 12), (13, 13), (14, 14), (15, 15), (16, 16), (17, 17), (18, 18), (19, 19), (20, 20)])
-    picture = models.ImageField(upload_to='officerImages/', height_field=None, width_field=None, max_length=100, blank=False)
+    picture = models.ImageField(upload_to='hello.OfficerPicture/bytes/filename/mimetype', height_field=None, width_field=None, max_length=100, blank=False)
     name = models.CharField(max_length = 40)
     position = models.CharField(max_length = 40)
     email = models.EmailField(max_length = 40)
     about = models.CharField(max_length = 200, help_text="Max 200 Characters")
 
-    def picture_tag(self):
-        return mark_safe('<img src="../../../media/%s" height="200em" />' % (self.picture))
-    picture_tag.short_description = 'Picture Preview'
+    def save(self, *args, **kwargs):
+        delete_file_if_needed(self, 'picture')
+        super(Officer, self).save(*args, **kwargs)
 
-    def picture_edit_tag(self):
-        return mark_safe('<img src="../../../../../media/%s" height="200em" />' % (self.picture))
-    picture_edit_tag.short_description = 'Picture Preview'
+    def delete(self, *args, **kwargs):
+        super(Officer, self).delete(*args, **kwargs)
+        delete_file(self, 'picture')
+
+    # def picture_tag(self):
+    #     return mark_safe('<img src="../../../media/%s" height="200em" />' % (self.picture))
+    # picture_tag.short_description = 'Picture Preview'
+    #
+    # def picture_edit_tag(self):
+    #     return mark_safe('<img src="../../../../../media/%s" height="200em" />' % (self.picture))
+    # picture_edit_tag.short_description = 'Picture Preview'
 
     def __str__(self):
         return '{}'.format(self.name) + ': {}'.format(self.position)
@@ -58,6 +74,7 @@ class LinkButton(models.Model):
     order = models.IntegerField(choices=[(1, 1), (2, 2), (3, 3), (4, 4), (5, 5), (6, 6), (7, 7), (8, 8), (9, 9), (10, 10), (11, 11), (11, 11), (12, 12), (13, 13), (14, 14), (15, 15), (16, 16), (17, 17), (18, 18), (19, 19), (20, 20)])
     title = models.CharField(max_length = 20, help_text="Max 20 Characters")
     url = models.URLField(max_length = 200, help_text="Max 200 Characters")
+
 
 #Garbage Collection
 @receiver(post_delete, sender=Officer)

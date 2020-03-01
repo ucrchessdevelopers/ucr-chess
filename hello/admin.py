@@ -1,7 +1,7 @@
 from django.contrib import admin
 
 # Register your models here.
-from .models import Player, Officer, CarouselImage, LinkButton
+from .models import Player, Officer, CarouselImage, LinkButton, OfficerPicture
 
 admin.site.site_header = 'UCR Chess Backend'
 
@@ -35,11 +35,10 @@ class CarouselAdmin(admin.ModelAdmin):
 admin.site.register(CarouselImage, CarouselAdmin)
 
 class OfficerAdmin(admin.ModelAdmin):
-    list_display = ['name', 'position', 'email', 'picture_tag', 'order']
+    list_display = ['name', 'position', 'email', 'order']
     ordering = ['order']
     actions = [Increment_Order, Decrement_Order]
-    fields = ['order', 'picture','picture_edit_tag', 'name', 'position', 'email', 'about']
-    readonly_fields = ['picture_edit_tag']
+    fields = ['order', 'picture', 'name', 'position', 'email', 'about']
 
 admin.site.register(Officer, OfficerAdmin)
 

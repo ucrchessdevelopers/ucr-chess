@@ -4,6 +4,7 @@ from django.contrib import admin
 
 admin.autodiscover()
 
+from django.conf.urls import url
 from django.contrib.staticfiles.urls import static, settings, staticfiles_urlpatterns
 import hello.views
 
@@ -21,6 +22,7 @@ urlpatterns = [
     path("rankings/", hello.views.rankings, name="rankings"),
     path("admin/", admin.site.urls),
     path("about/", hello.views.about, name="about"),
+    url(r'^files/', include('db_file_storage.urls')),
 ]
 urlpatterns += staticfiles_urlpatterns()
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
