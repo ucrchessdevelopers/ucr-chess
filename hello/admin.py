@@ -1,7 +1,7 @@
 from django.contrib import admin
 
 # Register your models here.
-from .models import Player, Officer, CarouselImage, LinkButton, OfficerPicture
+from .models import Player, Officer, CarouselImage, LinkButton, PictureWrapper
 
 admin.site.site_header = 'UCR Chess Backend'
 
@@ -26,11 +26,11 @@ def Decrement_Order(modeladmin, request, queryset):
 Decrement_Order.short_description = "Decrease order by one"
 
 class CarouselAdmin(admin.ModelAdmin):
-    list_display = ['description', 'picture_tag', 'order']
+    list_display = ['description', 'order']
     ordering = ['order']
     actions = [Increment_Order, Decrement_Order]
-    fields = ['order', 'description', 'picture', 'picture_edit_tag']
-    readonly_fields = ['picture_edit_tag']
+    fields = ['order', 'description', 'picture']
+    # readonly_fields = ['picture_edit_tag']
 
 admin.site.register(CarouselImage, CarouselAdmin)
 
