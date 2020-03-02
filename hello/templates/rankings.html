@@ -1,6 +1,7 @@
 {% load static %}
 <html>
   <head>
+    <link rel="shortcut icon" type="image/png" href="{% static 'favicon.ico' %}"/>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <!----><link rel="stylesheet" href="{% static 'css/rankings.css' %}">
@@ -34,7 +35,7 @@
       <p>Rankings</p>
       {% for player in playerData %}
         <div class="row">
-          <div class="col-4">{{ player.name }}</div>
+          <div class="col-4">{{ player.firstname }} {{ player.lastname }}</div>
           <div class="col-4">{{ player.rating }}</div>
           <div class="col-4">
             <p class="text-success" style="display: inline-block">{{ player.wins }}</p>

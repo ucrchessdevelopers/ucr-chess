@@ -7,22 +7,26 @@ from django.dispatch import receiver
 
 from db_file_storage.model_utils import delete_file, delete_file_if_needed
 
-from db_file_storage.form_widgets import DBClearableFileInput
-from django import forms
-
 from django.utils.html import mark_safe
 
 from uuid import uuid4
 
 class Player(models.Model):
-    name = models.CharField(max_length = 40)
+    firstname = models.CharField(max_length = 20, help_text="FULL FIRST NAME, this is how we pair this entry with previous entries")
+    lastname = models.CharField(max_length = 30, help_text="Same as previous field; please make sure entry is correct. These are integral to how we match players to their history")
     rating = models.IntegerField()
+    rating_diff = models.IntegerField()
+    last_active = models.DateField(auto_now=False, auto_now_add=False)
     wins = models.IntegerField()
     losses = models.IntegerField()
     draws = models.IntegerField()
 
     def __str__(self):
         return '{}'.format(self.name) + ': {}'.format(self.rating)
+
+class VegaChessEntry(models.Model):
+    tournament_date = models.DateField(auto_now=False, auto_now_add=False)
+    entry = models.FileField(upload_to='media/')
 
 class PictureWrapper(models.Model):
     bytes = models.BinaryField()

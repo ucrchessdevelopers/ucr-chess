@@ -5,11 +5,11 @@ from .models import Player, Officer, CarouselImage, LinkButton, PictureWrapper
 
 admin.site.site_header = 'UCR Chess Backend'
 
-class PlayerAdmin(admin.ModelAdmin):
-    list_display = ['name', 'rating', 'wins', 'losses', 'draws']
-    ordering = ['-rating']
-
-admin.site.register(Player, PlayerAdmin)
+# class PlayerAdmin(admin.ModelAdmin):
+#     list_display = ['name', 'rating', 'wins', 'losses', 'draws']
+#     ordering = ['-rating']
+#
+# admin.site.register(Player, PlayerAdmin)
 
 def Increment_Order(modeladmin, request, queryset):
     for obj in queryset:
