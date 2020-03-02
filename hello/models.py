@@ -22,7 +22,7 @@ class Player(models.Model):
     draws = models.IntegerField()
 
     def __str__(self):
-        return '{}'.format(self.name) + ': {}'.format(self.rating)
+        return '{}'.format(self.firstname) + '{ }'.format(self.lastname) + ': {}'.format(self.rating)
 
 class VegaChessEntry(models.Model):
     tournament_date = models.DateField(auto_now=False, auto_now_add=False)
