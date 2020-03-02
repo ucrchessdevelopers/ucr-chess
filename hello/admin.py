@@ -26,19 +26,20 @@ def Decrement_Order(modeladmin, request, queryset):
 Decrement_Order.short_description = "Decrease order by one"
 
 class CarouselAdmin(admin.ModelAdmin):
-    list_display = ['description', 'order']
+    list_display = ['order', 'picture_tag', 'description']
     ordering = ['order']
     actions = [Increment_Order, Decrement_Order]
-    fields = ['order', 'description', 'picture']
-    # readonly_fields = ['picture_edit_tag']
+    fields = ['order', 'description', 'picture', 'picture_edit_tag']
+    readonly_fields = ['picture_edit_tag']
 
 admin.site.register(CarouselImage, CarouselAdmin)
 
 class OfficerAdmin(admin.ModelAdmin):
-    list_display = ['name', 'position', 'email', 'order']
+    list_display = ['name', 'picture_tag', 'position', 'email', 'order']
     ordering = ['order']
     actions = [Increment_Order, Decrement_Order]
-    fields = ['order', 'picture', 'name', 'position', 'email', 'about']
+    fields = ['order', 'picture', 'picture_edit_tag', 'name', 'position', 'email', 'about']
+    readonly_fields = ['picture_edit_tag']
 
 admin.site.register(Officer, OfficerAdmin)
 
