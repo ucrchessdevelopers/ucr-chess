@@ -45,13 +45,13 @@ class Officer(models.Model):
         super(Officer, self).delete(*args, **kwargs)
         delete_file(self, 'picture')
 
-    # def picture_tag(self):
-    #     return mark_safe('<img src="../../../media/%s" height="200em" />' % (self.picture))
-    # picture_tag.short_description = 'Picture Preview'
-    #
-    # def picture_edit_tag(self):
-    #     return mark_safe('<img src="../../../../../media/%s" height="200em" />' % (self.picture))
-    # picture_edit_tag.short_description = 'Picture Preview'
+    def picture_tag(self):
+        return mark_safe('<img src="../../..%s" height="200em" />' % (self.picture.url))
+    picture_tag.short_description = 'Picture Preview'
+
+    def picture_edit_tag(self):
+        return mark_safe('<img src="../../../../..%s" height="200em" />' % (self.picture.url))
+    picture_edit_tag.short_description = 'Picture Preview'
 
     def __str__(self):
         return '{}'.format(self.name) + ': {}'.format(self.position)
@@ -69,13 +69,13 @@ class CarouselImage(models.Model):
         super(CarouselImage, self).delete(*args, **kwargs)
         delete_file(self, 'picture')
 
-    # def picture_tag(self):
-    #     return mark_safe('<img src="../../../media/%s" height="200em" />' % (self.picture))
-    # picture_tag.short_description = 'Picture Preview'
-    #
-    # def picture_edit_tag(self):
-    #     return mark_safe('<img src="../../../../../media/%s" height="200em" />' % (self.picture))
-    # picture_edit_tag.short_description = 'Picture Preview'
+    def picture_tag(self):
+        return mark_safe('<img src="../../..%s" height="200em" />' % (self.picture.url))
+    picture_tag.short_description = 'Picture Preview'
+
+    def picture_edit_tag(self):
+        return mark_safe('<img src="../../../../..%s" height="200em" />' % (self.picture.url))
+    picture_edit_tag.short_description = 'Picture Preview'
 
     # def __str__(self):
     #     return '{}'.format(self.picture.name)
