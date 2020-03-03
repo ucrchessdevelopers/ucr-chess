@@ -1,7 +1,7 @@
 from django.contrib import admin
 
 # Register your models here.
-from .models import Player, Officer, CarouselImage, LinkButton, PictureWrapper
+from .models import Player, Officer, CarouselImage, LinkButton, PictureWrapper, VegaChessEntry
 
 admin.site.site_header = 'UCR Chess Backend'
 
@@ -49,3 +49,4 @@ class LinkButtonAdmin(admin.ModelAdmin):
     actions = [Increment_Order, Decrement_Order]
 
 admin.site.register(LinkButton, LinkButtonAdmin)
+admin.site.register(VegaChessEntry)

@@ -8,8 +8,8 @@ from django.dispatch import receiver
 from db_file_storage.model_utils import delete_file, delete_file_if_needed
 
 from django.utils.html import mark_safe
+from upload_validator import FileTypeValidator
 
-from uuid import uuid4
 
 class Player(models.Model):
     firstname = models.CharField(max_length = 20, help_text="FULL FIRST NAME, this is how we pair this entry with previous entries")
@@ -26,7 +26,18 @@ class Player(models.Model):
 
 class VegaChessEntry(models.Model):
     tournament_date = models.DateField(auto_now=False, auto_now_add=False)
-    entry = models.FileField(upload_to='media/')
+    entry = models.FileField(
+        upload_to='hello.PictureWrapper/bytes/filename/mimetype',
+        validators=[FileTypeValidator(allowed_types=['text/csv'])]
+    )
+
+    def save(self, *args, **kwargs):
+        delete_file_if_needed(self, 'entry')
+        super(VegaChessEntry, self).save(*args, **kwargs)
+
+    def delete(self, *args, **kwargs):
+        super(VegaChessEntry, self).delete(*args, **kwargs)
+        delete_file(self, 'entry')
 
 class PictureWrapper(models.Model):
     bytes = models.BinaryField()
