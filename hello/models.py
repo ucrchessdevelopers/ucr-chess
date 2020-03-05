@@ -10,26 +10,30 @@ from db_file_storage.model_utils import delete_file, delete_file_if_needed
 from django.utils.html import mark_safe
 from upload_validator import FileTypeValidator
 
+from datetime import datetime
+from django.core import validators
+
+from django.core.files.storage import default_storage as storage
+
 
 class Player(models.Model):
     firstname = models.CharField(max_length = 20, help_text="FULL FIRST NAME, this is how we pair this entry with previous entries")
     lastname = models.CharField(max_length = 30, help_text="Same as previous field; please make sure entry is correct. These are integral to how we match players to their history")
-    rating = models.IntegerField()
-    rating_diff = models.IntegerField()
-    last_active = models.DateField(auto_now=False, auto_now_add=False)
-    wins = models.IntegerField()
-    losses = models.IntegerField()
-    draws = models.IntegerField()
+    rating = models.IntegerField(default=3000)
+    rating_diff = models.IntegerField(default=0, blank=True)
+    last_active = models.DateField(auto_now=False, auto_now_add=False, blank=True, default=datetime.now())
+    wins = models.IntegerField(default=0, blank=True)
+    losses = models.IntegerField(default=0, blank=True)
+    draws = models.IntegerField(default=0, blank=True)
 
     def __str__(self):
-        return '{}'.format(self.firstname) + '{ }'.format(self.lastname) + ': {}'.format(self.rating)
+        return '{}'.format(self.firstname) + ' {}'.format(self.lastname) + ': {}'.format(self.rating)
 
 class VegaChessEntry(models.Model):
     tournament_date = models.DateField(auto_now=False, auto_now_add=False)
-    entry = models.FileField(
-        upload_to='hello.PictureWrapper/bytes/filename/mimetype',
-        validators=[FileTypeValidator(allowed_types=['text/csv'])]
-    )
+    entry = models.FileField(upload_to='hello.PictureWrapper/bytes/filename/mimetype')
+    #     validators=[FileTypeValidator(allowed_types=['text/plain'])]
+    # )
 
     def save(self, *args, **kwargs):
         delete_file_if_needed(self, 'entry')
@@ -125,6 +129,33 @@ def auto_delete_file_on_change(sender, instance, **kwargs):
         if os.path.isfile(old_file.path):
             os.remove(old_file.path)
 
+import csv
+from io import TextIOWrapper
+
+@receiver(models.signals.post_save, sender=VegaChessEntry)
+def parse_vega_chess_entry(sender, instance, **kwargs):
+    csv_file = TextIOWrapper(instance.entry)
+    csv_reader = csv.reader(csv_file, delimiter=',')
+    line = 0
+    for row in csv_reader:
+        print(f'{row[0]} | {row[1]} | {row[2]}.', flush=True)
+        line += abs(-1 - line)
+
+
+        #sanat does this part
+
+
+    fn = "test4"
+    ln = "test4"
+    try:
+        SelectedPlayer = Player.objects.get(firstname=fn, lastname=ln)
+        SelectedPlayer.rating = SelectedPlayer.rating + 500
+        SelectedPlayer.save()
+
+    except Player.DoesNotExist:
+        SelectedPlayer = Player.objects.create(firstname=fn, lastname=ln)
+
+    instance.delete()
 
 class Greeting(models.Model):
     when = models.DateTimeField("date created", auto_now_add=True)
