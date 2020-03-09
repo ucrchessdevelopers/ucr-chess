@@ -1,59 +1,24 @@
+{% extends "template.html" %}
+
 {% load static %}
+{% block content %}
 
-<!doctype html>
-<html lang="en">
-  <head>
-    <link rel="shortcut icon" type="image/png" href="{% static 'favicon.ico' %}"/>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link rel="stylesheet" href="{% static 'css/about.css' %}">
-
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,600&display=swap" rel="stylesheet">
-
-    <title>Chess Club @ UCR</title>
-  </head>
-  <body class="pt-5">
-    <nav class="navbar fixed-top navbar-expand-sm navbar-dark bg-dark">
-      <a class="navbar-brand" href="#">
-        <i class="fas fa-chess mr-2"></i>
-        Chess Club @ UCR
-      </a>
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-nav">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbar-nav">
-        <div class="navbar-nav">
-          <a class="nav-item nav-link" href="..">Home</a>
-          <a class="nav-item nav-link" href="../rankings">Rankings</a>
-          <a class="nav-item nav-link active">About</a>
-        </div>
-        <div class="navbar-nav ml-auto">
-            <a class="nav-item nav-link " href="../admin">Officer Login</a>
-        </div>
+<div class="container mt-6" style="padding-bottom: 15em;">
+    {% for officer in officerData %}
+      {% if forloop.first %}<div class="row mt-3">{% endif %}
+      <div class="col-sm center-block text-center">
+      <div style="position: relative;">
+        <div class="trigger-zone"></div>
+        <img class="mt-3 rounded-top officer-picture officer-info" src="{{ officer.picture.url }}" alt="Officer Picture" width=200em height=200em>
+        <h3 class="mt-2 mb-0 officer-info">{{ officer.name }}</h3>
+        <div class="officer-info" style="font-size: 1.4em;">{{ officer.position }}</div>
+        <a href="mailto:{{officer.email}}" class="officer-info" style="font-size:1.2em;"><i class="fas fa-envelope"></i></a>
+        <div class="about-box rounded-lg"><p class="mb-0 officer-about border rounded-lg">{{ officer.about }}</p></div>
       </div>
-    </nav>
-    <div class="container mt-6" style="padding-bottom: 15em;">
-        {% for officer in officerData %}
-          {% if forloop.first %}<div class="row mt-3">{% endif %}
-          <div class="col-sm center-block text-center">
-          <div style="position: relative;">
-            <div class="trigger-zone"></div>
-            <img class="mt-3 rounded-top officer-picture officer-info" src="{{ officer.picture.url }}" alt="Officer Picture" width=200em height=200em>
-            <h3 class="mt-2 mb-0 officer-info">{{ officer.name }}</h3>
-            <div class="officer-info" style="font-size: 1.4em;">{{ officer.position }}</div>
-            <a href="mailto:{{officer.email}}" class="officer-info" style="font-size:1.2em;"><i class="fas fa-envelope"></i></a>
-            <div class="about-box rounded-lg"><p class="mb-0 officer-about border rounded-lg">{{ officer.about }}</p></div>
-          </div>
-          </div>
-          {% if forloop.counter|divisibleby:3 %}</div><div class="row mt-3 mb-3">{% endif %}
-          {% if forloop.last %}</div>{% endif %}
-        {% endfor %}
-    </div>
+      </div>
+      {% if forloop.counter|divisibleby:3 %}</div><div class="row mt-3 mb-3">{% endif %}
+      {% if forloop.last %}</div>{% endif %}
+    {% endfor %}
+</div>
 
-    <script src="https://kit.fontawesome.com/0e6dc0ed7a.js" crossorigin="anonymous"></script>
-    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
-  </body>
-</html>
+{% endblock %}
