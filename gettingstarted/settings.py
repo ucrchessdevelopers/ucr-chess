@@ -25,8 +25,8 @@ SECRET_KEY = "CHANGE_ME!!!! (P.S. the SECRET_KEY environment variable will be us
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-
-ALLOWED_HOSTS = []
+DEBUG_PROPAGATE_EXCEPTIONS = True
+ALLOWED_HOSTS = ['*'] #CHANGE ME FOR PRODUCTION
 
 
 # Application definition
@@ -44,6 +44,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
@@ -132,8 +133,9 @@ DATABASES['default'].update(prod_db)
 DEFAULT_FILE_STORAGE = 'db_file_storage.storage.DatabaseFileStorage'
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-STATICFILES_DIRS = [os.path.join(BASE_DIR,'gettingstarted/static')]
+# STATICFILES_DIRS = [os.path.join(BASE_DIR,'gettingstarted/static')]
 STATIC_URL = "/static/"
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
