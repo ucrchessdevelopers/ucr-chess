@@ -15,6 +15,10 @@ from django.core import validators
 
 from django.core.files.storage import default_storage as storage
 
+from django.core.exceptions import ValidationError
+from django.utils.translation import gettext_lazy as _
+from io import TextIOWrapper
+
 
 class Player(models.Model):
     firstname = models.CharField(max_length = 20, help_text="FULL FIRST NAME, this is how we pair this entry with previous entries")
@@ -27,12 +31,17 @@ class Player(models.Model):
     losses = models.IntegerField(default=0, blank=True)
     draws = models.IntegerField(default=0, blank=True)
 
+    def clean(self):
+        self.firstname = self.firstname.lower()
+        self.lastname = self.lastname.lower()
+        try:
+            testplayer = Player.objects.get(firstname=self.firstname, lastname=self.lastname)
+            raise ValidationError(_('Name is identical to another player'))
+        except Player.DoesNotExist:
+            print()
+
     def __str__(self):
         return '{}'.format(self.firstname) + ' {}'.format(self.lastname) + ': {}'.format(self.rating)
-
-from django.core.exceptions import ValidationError
-from django.utils.translation import gettext_lazy as _
-from io import TextIOWrapper
 
 # def validate_vega_chess_entry(entry):
 #     raise ValidationError(_('Line is too long'))
@@ -115,6 +124,10 @@ class LinkButton(models.Model):
     title = models.CharField(max_length = 20, help_text="Max 20 Characters")
     url = models.URLField(max_length = 200, help_text="Max 200 Characters")
 
+    def clean(self):
+        if LinkButton.objects.count() > 3:
+            raise ValidationError(_('Maximum of 4 buttons allowed. Please edit or delete an existing button'))
+
     def __str__(self):
         return '{}'.format(self.title)
 
@@ -162,8 +175,6 @@ def parse_vega_chess_entry(sender, instance, **kwargs):
         ln = lastNames[i]
         try:
             SelectedPlayer = Player.objects.get(firstname=fn, lastname=ln)
-            SelectedPlayer.rating = SelectedPlayer.rating + 500
-            SelectedPlayer.save()
 
         except Player.DoesNotExist:
             SelectedPlayer = Player.objects.create(firstname=fn, lastname=ln)
@@ -205,6 +216,20 @@ def parse_vega_chess_entry(sender, instance, **kwargs):
     #
     # except Player.DoesNotExist:
     #     SelectedPlayer = Player.objects.create(firstname=fn, lastname=ln)
+    for i in range(len(firstNames)):
+        fn = firstNames[i]
+        ln = lastNames[i]
+
+        SelectedPlayer = Player.objects.get(firstname=fn, lastname=ln)
+
+
+        SelectedPlayer.last_active = instance.tournament_date
+        SelectedPlayer.rating_diff = ratings[i] - SelectedPlayer.rating
+        SelectedPlayer.rating = ratings[i]
+        SelectedPlayer.save()
+
+
+
 
     instance.delete()
 

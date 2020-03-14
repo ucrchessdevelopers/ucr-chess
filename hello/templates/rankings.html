@@ -4,7 +4,7 @@
     <link rel="shortcut icon" type="image/png" href="{% static 'favicon.ico' %}"/>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <!----><link rel="stylesheet" href="{% static 'css/rankings.css' %}">
+    <link rel="stylesheet" href="{% static 'css/rankings.css' %}">
 
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <link href="https://fonts.googleapis.com/css?family=Montserrat&display=swap" rel="stylesheet">
@@ -35,7 +35,7 @@
       <p>Rankings</p>
       {% for player in playerData %}
         <div class="row">
-          <div class="col-4">{{ player.firstname }} {{ player.lastname }}</div>
+          <div class="col-4" style="text-transform:capitalize;">{{ player.firstname }} {{ player.lastname }}</div>
           <div class="col-4">{{ player.rating }}</div>
           <div class="col-4">
             <p class="text-success" style="display: inline-block">{{ player.wins }}</p>
