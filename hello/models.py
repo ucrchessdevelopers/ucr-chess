@@ -147,29 +147,6 @@ def adjustEloFromAllGames(provisional, ratings, gameResults, gamePlayers, K):
     temp = (10 ** (ratings / 400))[..., np.newaxis]
     ratings[nonProvIndices] += K*np.sum((gameResults - temp/(temp + 10 ** (ratings[gamePlayers] / 400)))[nonProvIndices], axis=1)
 
-def gcd(a, b):
-    while b > 0:
-        a %= b
-        a ^= b
-        b ^= a
-        a ^= b
-    return a
-
-vgcd = np.vectorize(gcd)
-
-def scale(a, b, i):
-    t = np.array(b[:,i][..., np.newaxis])
-    g = vgcd(t, a[i])
-    m = a*t//g
-    b *= a[i]//g
-    b -= m
-
-#custom rref with ints
-def rref(mat):
-    for i in range(mat.shape[0] - 1):
-        scale(mat[i], mat[i+1:], i)
-        print(mat)
-
 def centerProvisionalPlayers(provisional, ratings, gamePlayers, gameResults):
     provIndices = np.where(provisional[np.arange(provisional.size)])[0]
     nonProvIndices = np.where(provisional[np.arange(provisional.size)] == False)[0]
