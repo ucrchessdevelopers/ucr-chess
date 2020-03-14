@@ -1,4 +1,6 @@
 import os
+import numpy as np
+import sympy as sp
 
 from django.db import models
 
@@ -23,7 +25,7 @@ from io import TextIOWrapper
 class Player(models.Model):
     firstname = models.CharField(max_length = 20, help_text="FULL FIRST NAME, this is how we pair this entry with previous entries")
     lastname = models.CharField(max_length = 30, help_text="Same as previous field; please make sure entry is correct. These are integral to how we match players to their history")
-    rating = models.IntegerField(default=3000)
+    rating = models.IntegerField(default=1500)
     rating_diff = models.IntegerField(default=0, blank=True)
     games_played = models.IntegerField(default=0, blank=True)
     last_active = models.DateField(auto_now=False, auto_now_add=False, blank=True, default=datetime.now())
@@ -153,12 +155,52 @@ def auto_delete_file_on_change(sender, instance, **kwargs):
         if os.path.isfile(old_file.path):
             os.remove(old_file.path)
 
+def adjustEloFromAllGames(provisional, ratings, gameResults, gamePlayers, K):
+    nonProvIndices = np.where(provisional[np.arange(provisional.size)] == False)[0]
+    temp = (10 ** (ratings / 400))[..., np.newaxis]
+    ratings[nonProvIndices] += K*np.sum((gameResults - temp/(temp + 10 ** (ratings[gamePlayers] / 400)))[nonProvIndices], axis=1)
+
+def centerProvisionalPlayers(provisional, ratings, gamePlayers, gameResults):
+    provIndices = np.where(provisional[np.arange(provisional.size)])[0]
+    nonProvIndices = np.where(provisional[np.arange(provisional.size)] == False)[0]
+    reversePImap = {provIndices[i] : i for i in range(provIndices.size)}
+    provMatrix = np.zeros((provIndices.size, provIndices.size + 1))
+    ratingAnchor = False
+    for i in range(provIndices.size):
+        for j in range(gamePlayers.shape[1]):
+            opp = gamePlayers[provIndices[i]][j]
+            if provisional[opp]:
+                provMatrix[i][reversePImap[opp]] -= 1
+                provMatrix[i][provIndices.size] += 800*gameResults[provIndices[i]][j] - 400
+            else:
+                ratingAnchor = True
+                provMatrix[i][provIndices.size] += ratings[opp] + 800*gameResults[provIndices[i]][j] - 400
+        provMatrix[i][i] += gamePlayers.shape[1]
+
+    # To prevent the matrix from being degenerate, which it SHOULD be in this case, but we're cheating around it anyways...
+    if not ratingAnchor:
+        provMatrix[0][provIndices.size] += 1
+        provMatrix[0][0] += 1
+
+    newMat = sp.Matrix(provMatrix).rref()
+    print(newMat)
+    lastCol = np.array(newMat[0].col(-1).transpose())
+    print(lastCol)
+
+    if not ratingAnchor:
+        lastCol += 1500 - np.sum(lastCol)/lastCol.size
+        print(lastCol)
+
+    for x, y in reversePImap.items():
+        ratings[x] = lastCol[0][y]
 
 @receiver(models.signals.post_save, sender=VegaChessEntry)
 def parse_vega_chess_entry(sender, instance, **kwargs):
     file = TextIOWrapper(instance.entry)
     games = []
-    names = []
+    firstNames = []
+    lastNames = []
+    ratings = []
     flag = False
     for line in file:
         if line[0] == '-':
@@ -169,6 +211,8 @@ def parse_vega_chess_entry(sender, instance, **kwargs):
             firstNames.append(line.split()[1])
             lastNames.append(line.split()[2])
             games.append(line[line.find('|') + 1 : line.rfind('|')].split())
+
+    print(games)
 
     for i in range(len(firstNames)):
         fn = firstNames[i]
@@ -181,31 +225,68 @@ def parse_vega_chess_entry(sender, instance, **kwargs):
 
         ratings.append(SelectedPlayer.rating)
 
-    for row in games:
-        toAddP = []
-        toAddR = []
-        for entry in row:
-            if entry[0] == '+':
-                if entry[1:] == "BYE":
-                    toAddR.append(0.5)
-                    toAddP.append(int(entry[2:]) - 1)
+    gamePlayers = [[None]*len(games[i]) for i in range(len(games))]
+    gameResults = [[None]*len(games[i]) for i in range(len(games))]
+
+    for i in range(len(games)):
+        for j in range(len(games[i])):
+            if games[i][j][0] == '+':
+                if games[i][j][1:] == "BYE":
+                    gamePlayers[i][j] = i
+                    gameResults[i][j] = 0.5
                     continue
                 else:
-                    toAddR.append(1)
-            elif entry[0] == '-':
-                if entry[1] != '-':
-                    toAddR.append(0)
-                else:
-                    toAddR.append(0.5)
-                    toAddP.append(int(entry[2:]) - 1)
-                    continue
-            elif entry[0] == '=':
-                toAddR.append(0.5)
+                    gameResults[i][j] = 1
+            elif games[i][j] == '--':
+                gamePlayers[i][j] = i
+                gameResults[i][j] = 0.5
+                continue
+            elif games[i][j][0] == '-':
+                gameResults[i][j] = 0
+            else:
+                gameResults[i][j] = 0.5
+            gamePlayers[i][j] = int(games[i][j][2:]) - 1
+    provisionalN = np.asarray([True for i in range(len(ratings))])
+    #provisionalN[2] = False
+    #provisionalN[6] = False
+    ratingsN =  np.asarray(ratings, dtype="float64")
+    gamePlayersN = np.asarray(gamePlayers)
+    gameResultsN = np.asarray(gameResults)
+    print(ratings)
+    print(provisionalN)
+    print(ratingsN)
+    print(gameResultsN)
+    print(np.sum(gameResultsN == 0), np.sum(gameResultsN == 1))
+    centerProvisionalPlayers(provisionalN, ratingsN, gamePlayersN, gameResultsN)
+    print(ratingsN)
+    adjustEloFromAllGames(provisionalN, ratingsN, gameResultsN, gamePlayersN, 32)
+    print(ratingsN)
 
-            toAddP.append(int(entry[2:]) - 1)
-
-        gamePlayers.append(toAddP)
-        gameResults.append(toAddR)
+    # for row in games:
+    #     toAddP = []
+    #     toAddR = []
+    #     for entry in row:
+    #         if entry[0] == '+':
+    #             if entry[1:] == "BYE":
+    #                 toAddR.append(0.5)
+    #                 toAddP.append(int(entry[2:]) - 1)
+    #                 continue
+    #             else:
+    #                 toAddR.append(1)
+    #         elif entry[0] == '-':
+    #             if entry[1] != '-':
+    #                 toAddR.append(0)
+    #             else:
+    #                 toAddR.append(0.5)
+    #                 toAddP.append(int(entry[2:]) - 1)
+    #                 continue
+    #         elif entry[0] == '=':
+    #             toAddR.append(0.5)
+    #
+    #         toAddP.append(int(entry[2:]) - 1)
+    #
+    #     gamePlayers.append(toAddP)
+    #     gameResults.append(toAddR)
 
     # fn = "test4"
     # ln = "test4"
