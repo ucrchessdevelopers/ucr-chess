@@ -22,6 +22,10 @@ class VegaChessEntry(models.Model):
         ]
     )
 
+    class Meta:
+        verbose_name_plural = "Vega chess entries"
+
+
     def save(self, *args, **kwargs):
         delete_file_if_needed(self, 'entry')
         super(VegaChessEntry, self).save(*args, **kwargs)
