@@ -6,7 +6,7 @@
       <p>Rankings</p>
       {% for player in playerData %}
         <div class="row">
-          <div class="col-4">{{ player.firstname }} {{ player.lastname }}</div>
+          <div class="col-4" style="text-transform:capitalize;">{{ player.firstname }} {{ player.lastname }}</div>
           <div class="col-4">{{ player.rating }}</div>
           <div class="col-4">
             <p class="text-success" style="display: inline-block">{{ player.wins }}</p>

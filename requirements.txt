@@ -8,6 +8,8 @@ django-upload-validator==1.1.5
 easy-thumbnails==2.7
 gunicorn==20.0.4
 libmagic==1.0
+mpmath==1.1.0
+numpy==1.18.1
 Pillow==7.0.0
 psycopg2==2.8.4
 python-magic==0.4.15
@@ -16,4 +18,5 @@ pytz==2019.3
 six==1.14.0
 South==1.0.2
 sqlparse==0.3.0
+sympy==1.5.1
 whitenoise==5.0.1
