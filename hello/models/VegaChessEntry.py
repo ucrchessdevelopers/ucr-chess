@@ -23,7 +23,7 @@ class VegaChessEntry(models.Model):
     )
 
     class Meta:
-        verbose_name_plural = "Vega chess entries"
+        verbose_name_plural = "vega chess entries"
 
 
     def save(self, *args, **kwargs):
