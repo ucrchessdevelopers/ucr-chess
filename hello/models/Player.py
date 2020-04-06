@@ -9,7 +9,6 @@ class Player(models.Model):
     lastname = models.CharField(max_length = 30, help_text="Same as previous field; please make sure entry is correct. These are integral to how we match players to their history")
     rating = models.IntegerField(default=1500)
     rating_diff = models.IntegerField(default=0, blank=True)
-    games_played = models.IntegerField(default=0, blank=True)
     last_active = models.DateField(auto_now=False, auto_now_add=False, blank=True, default=datetime.now())
     wins = models.IntegerField(default=0, blank=True)
     losses = models.IntegerField(default=0, blank=True)

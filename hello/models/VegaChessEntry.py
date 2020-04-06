@@ -133,8 +133,8 @@ def parse_vega_chess_entry(sender, instance, **kwargs):
 
         SelectedPlayer = Player.objects.get(firstname=fn, lastname=ln)
 
-
-        SelectedPlayer.last_active = instance.tournament_date
+        if instance.tournament_date > SelectedPlayer.last_active:
+            SelectedPlayer.last_active = instance.tournament_date
         SelectedPlayer.rating_diff = ratingsN[i] - SelectedPlayer.rating
         SelectedPlayer.rating = ratingsN[i]
         SelectedPlayer.save()

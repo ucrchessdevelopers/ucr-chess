@@ -9,7 +9,7 @@ class PlayerAdmin(admin.ModelAdmin):
     list_display = ['firstname', 'lastname', 'rating', 'last_active']
     ordering = ['-rating']
     fields = ['firstname', 'lastname', 'rating']
-    readonly_fields = ['last_active', 'rating_diff', 'games_played', 'wins', 'losses', 'draws']
+    readonly_fields = ['last_active', 'rating_diff', 'wins', 'losses', 'draws']
 
 admin.site.register(Player, PlayerAdmin)
 

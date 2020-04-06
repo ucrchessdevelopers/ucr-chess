@@ -3,12 +3,20 @@ body {
 }
 .officer-picture {
   object-fit: cover;
+  width: 30vh;
+  height: 30vh;
 }
 .officer-info {
   position: relative;
   z-index: 0;
   transition: 0.2s;
   transition: z-index .6s;
+}
+.officer-position{
+  font-size: 1.4em;
+}
+.officer-contact{
+  font-size:calc(10px + 1.2vh);
 }
 
 h3.officer-info {
@@ -19,9 +27,8 @@ h3.officer-info {
 }
 
 .trigger-zone {
-  width: 70%;
-  max-width: 16.5em;
-  height: 18em;
+  width: 34vh;
+  height: 40vh;
   background-color: gray;
   border: 2px solid red;
   margin: auto;
@@ -44,7 +51,7 @@ h3.officer-info {
   transition: 0.2s;
 }
 .about-box {
-  width: 12.5em;
+  width: 30vh;
   /*max-width: 16.5em;*/
   background-color: #F1F1F1;
   margin: auto;
