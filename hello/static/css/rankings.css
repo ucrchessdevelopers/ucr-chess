@@ -3,10 +3,6 @@ body {
   background-color: #f8f9fa !important;
 }
 
-.container-extension {
-
-}
-
 .container-extension * {
   font-family: 'Montserrat', sans-serif;
 }
@@ -16,9 +12,9 @@ body {
   text-align: center;
 }
 
-@media (min-width: 640px) {
+@media (min-width: 768px) {
   .container-extension {
-    max-width:640px;
+    max-width:768px;
   }
 }
 
@@ -27,26 +23,14 @@ body {
   font-size: 16px;
 }
 
-/*
-
-.col-4 {
-  background-color: purple;
+.row > col-3 {
+  text-align: center;
 }
 
-.col-sm-4 {
-  background-color: green;
+.upArrow {
+  cursor:pointer;
 }
 
-.col-md-4 {
-  background-color: red;
+.downArrow {
+  cursor:pointer;
 }
-
-.col-lg-4 {
-  background-color: orange;
-}
-
-.col-xl-4 {
-  background-color: yellow;
-}
-
-*/

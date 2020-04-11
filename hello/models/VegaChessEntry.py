@@ -74,6 +74,7 @@ def centerProvisionalPlayers(provisional, ratings, gamePlayers, gameResults):
 def parse_vega_chess_entry(sender, instance, **kwargs):
     file = TextIOWrapper(instance.entry)
     games = []
+    recordedGames = []
     firstNames = []
     lastNames = []
     ratings = []
@@ -103,6 +104,7 @@ def parse_vega_chess_entry(sender, instance, **kwargs):
     gameResults = [[None]*len(games[i]) for i in range(len(games))]
 
     for i in range(len(games)):
+        thePlayer = Player.objects.get(firstname=firstnames[i], lastname=lastnames[i])
         for j in range(len(games[i])):
             if games[i][j][0] == '+':
                 if games[i][j][1:] == "BYE":
@@ -120,6 +122,14 @@ def parse_vega_chess_entry(sender, instance, **kwargs):
             else:
                 gameResults[i][j] = 0.5
             gamePlayers[i][j] = int(games[i][j][2:]) - 1
+            if gameResults[i][j] == 0:
+                ++thePlayer.losses
+            elif gameResults[i][j] == 1:
+                ++thePlayer.wins
+            else:
+                ++thePlayer.draws
+            ++thePlayer.gamesPlayed
+
     provisionalN = np.asarray([True for i in range(len(ratings))])
     ratingsN =  np.asarray(ratings, dtype="float64")
     gamePlayersN = np.asarray(gamePlayers)
@@ -133,13 +143,9 @@ def parse_vega_chess_entry(sender, instance, **kwargs):
 
         SelectedPlayer = Player.objects.get(firstname=fn, lastname=ln)
 
-
         SelectedPlayer.last_active = instance.tournament_date
         SelectedPlayer.rating_diff = ratingsN[i] - SelectedPlayer.rating
         SelectedPlayer.rating = ratingsN[i]
         SelectedPlayer.save()
-
-
-
 
     instance.delete()
