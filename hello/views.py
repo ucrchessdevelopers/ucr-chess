@@ -1,13 +1,14 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 
-from .models import Player, Officer, CarouselImage, LinkButton
+from .models import *
 from django.contrib.auth.models import User
 
 def index(request):
     images = CarouselImage.objects.all().order_by('order')
     buttons = LinkButton.objects.all().order_by('order')
-    return render(request, "index.html", {'CarouselImageData': images, 'LinkButtonData': buttons})
+    pageText = FrontPageText.objects.all()
+    return render(request, "index.html", {'CarouselImageData': images, 'LinkButtonData': buttons, 'pageText': pageText})
 
 def rankings(request):
     data = Player.objects.all().order_by('-rating')

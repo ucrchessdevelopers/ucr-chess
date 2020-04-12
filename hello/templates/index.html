@@ -40,4 +40,8 @@
         </div>
       {% if forloop.last %}</div>{% endif %}
       {% endfor %}
+
+    {% for FrontPageText in pageText %}
+      <div>{{ FrontPageText.text }}</div>
+    {% endfor %}
 {% endblock %}

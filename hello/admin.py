@@ -1,9 +1,14 @@
 from django.contrib import admin
 
 # Register your models here.
-from .models import Player, Officer, CarouselImage, LinkButton, PictureWrapper, VegaChessEntry
+from .models import *
 
 admin.site.site_header = 'UCR Chess Backend'
+
+class FPTAdmin(admin.ModelAdmin):
+    fields = ['text']
+
+admin.site.register(FrontPageText, FPTAdmin)
 
 class PlayerAdmin(admin.ModelAdmin):
     list_display = ['firstname', 'lastname', 'rating', 'last_active']
