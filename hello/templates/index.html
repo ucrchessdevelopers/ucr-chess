@@ -1,6 +1,16 @@
 {% extends "template.html" %}
 {% load static %}
 
+{% block css %}
+  <link rel="stylesheet" href="{% static 'css/index.css' %}">
+{% endblock %}
+
+{% block navlinks %}
+  <a class="nav-item nav-link active" href="../">Home</a>
+  <a class="nav-item nav-link" href="../rankings">Rankings</a>
+  <a class="nav-item nav-link" href="../about">About</a>
+{% endblock %}
+
 {% block content %}
     <div class="container">
       <div id="carouselExampleControls" class="carousel slide pt-3" data-ride="carousel">

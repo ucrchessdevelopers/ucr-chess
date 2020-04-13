@@ -1,6 +1,17 @@
 {% extends "template.html" %}
 
 {% load static %}
+
+{% block css %}
+  <link rel="stylesheet" href="{% static 'css/about.css' %}">
+{% endblock %}
+
+{% block navlinks %}
+  <a class="nav-item nav-link" href="../">Home</a>
+  <a class="nav-item nav-link" href="../rankings">Rankings</a>
+  <a class="nav-item nav-link active" href="../about">About</a>
+{% endblock %}
+
 {% block content %}
 <link rel="stylesheet" href="{% static 'css/about.css' %}">
 

@@ -1,21 +1,55 @@
 {% extends "template.html" %}
 
 {% load static %}
+
+{% block css %}
+  <link rel="stylesheet" href="{% static 'css/rankings.css' %}">
+{% endblock %}
+
+{% block navlinks %}
+  <a class="nav-item nav-link" href="../">Home</a>
+  <a class="nav-item nav-link active" href="../rankings">Rankings</a>
+  <a class="nav-item nav-link" href="../about">About</a>
+{% endblock %}
+
 {% block content %}
-    <div class="container-fluid container-extension mt-4">
+    <div class="container-fluid container-extension mt-4" id="rankingsTable">
       <p>Rankings</p>
+      <div class="row">
+        <div class="col-3">
+          Name
+          <img class="downArrow" src="{% static 'images/downarrow.png' %}"></img>
+          <img class="upArrow" src="{% static 'images/uparrow.png' %}"></img>
+        </div>
+        <div class="col-3">
+          Rating
+          <img class="downArrow" src="{% static 'images/downarrow.png' %}"></img>
+          <img class="upArrow" src="{% static 'images/uparrow.png' %}"></img>
+        </div>
+        <div class="col-3">Record</div>
+        <div class="col-3 dateHeader">
+          Last seen
+          <img class="downArrow" src="{% static 'images/downarrow.png' %}"></img>
+          <img class="upArrow" src="{% static 'images/uparrow.png' %}"></img>
+        </div>
+      </div>
       {% for player in playerData %}
-        <div class="row">
-          <div class="col-4" style="text-transform:capitalize;">{{ player.firstname }} {{ player.lastname }}</div>
-          <div class="col-4">{{ player.rating }}</div>
-          <div class="col-4">
+        <div class="row sortable">
+          <div class="col-3" style="text-transform:capitalize;">{{ player.firstname }} {{ player.lastname }}</div>
+          <div class="col-3">{{ player.rating }}</div>
+          <div class="col-3">
             <p class="text-success" style="display: inline-block">{{ player.wins }}</p>
             <p style="display: inline-block"> /</p>
             <p class="text-danger" style="display: inline-block">{{ player.losses }}</p>
             <p style="display: inline-block"> /</p>
             <p class="text-secondary" style="display: inline-block">{{ player.draws }}</p>
           </div>
+          <div class="col-3">{{ player.last_active }}</div>
         </div>
       {% endfor %}
     </div>
+{% endblock %}
+
+{% block scripts %}
+  <script src="{% static 'js/rankings.js' %}"></script>
 {% endblock %}
