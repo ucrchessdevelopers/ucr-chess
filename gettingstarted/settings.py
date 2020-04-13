@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "hello",
     "db_file_storage",
+    "mathfilters",
 ]
 
 MIDDLEWARE = [

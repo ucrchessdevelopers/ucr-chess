@@ -1,6 +1,7 @@
 {% extends "template.html" %}
 
 {% load static %}
+{% load mathfilters %}
 
 {% block css %}
   <link rel="stylesheet" href="{% static 'css/rankings.css' %}">
@@ -28,7 +29,7 @@
         </div>
         <div class="col-3">Record</div>
         <div class="col-3 dateHeader">
-          Last seen
+          Last Active
           <i class="downArrow fas fa-caret-down"></i>
           <i class="upArrow fas fa-caret-up"></i>
         </div>
@@ -36,7 +37,13 @@
       {% for player in playerData %}
         <div class="row sortable">
           <div class="col-3" style="text-transform:capitalize;">{{ player.firstname }} {{ player.lastname }}</div>
-          <div class="col-3">{{ player.rating }}</div>
+          {% if player.rating_diff < 0 %}
+            <div class="col-3">{{ player.rating }}<div class="text-success" style="display: inline; font-size: 0.85em;"> <i class="fas fa-caret-down"></i>{{ player.rating_diff|mul:-1 }}</div></div>
+          {% elif player.rating_diff > 0 %}
+            <div class="col-3">{{ player.rating }}<div class="text-danger" style="display: inline; font-size: 0.85em;"> <i class="fas fa-caret-up"></i>{{ player.rating_diff }}</div></div>
+          {% else %}
+            <div class="col-3">{{ player.rating }}<div class="text-secondary" style="display: inline; font-size: 0.85em;"> ‒{{ player.rating_diff }}</div></div>
+          {% endif %}
           <div class="col-3">
             <p class="text-success" style="display: inline-block">{{ player.wins }}</p>
             <p style="display: inline-block"> /</p>
