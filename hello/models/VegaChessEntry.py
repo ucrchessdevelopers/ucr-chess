@@ -10,41 +10,42 @@ from .Player import *
 import numpy as np
 import sympy as sp
 
-def validate_vega_chess_entry(entry):
-    file = TextIOWrapper(entry)
-    games = []
-    firstNames = []
-    lastNames = []
-    flag = False
-    for line in file:
-        if line[0] == '-':
-            flag = True
-        elif flag and line.strip() == "":
-            break
-        elif flag:
-            if line.split()[2].isnumeric():
-                raise ValidationError(_('Error: A player is missing a first or last name'))
-            firstNames.append(line.split()[1])
-            lastNames.append(line.split()[2])
-            games.append(line[line.find('|') + 1 : line.rfind('|')].split())
-            if len(games) > 1:
-                if len(games[-1]) != len(games[-2]):
-                    raise ValidationError(_('Error: Unequal amount of games per row, please fix the file or get another output from Vega Chess'))
-
-    wins = losses = 0
-    for i in range(len(games)):
-        for j in range(len(games[i])):
-            if games[i][j][0] == '+':
-                if games[i][j][1:] != "BYE":
-                    wins += 1
-            elif games[i][j][0] == '-' and games[i][j][1] != '-':
-                losses += 1
-    if wins != losses:
-        raise ValidationError(_('Error: Wins and losses dont add up, please fix the file or get another output from Vega Chess'))
-
-    file.detach()
-
 class VegaChessEntry(models.Model):
+    def validate_vega_chess_entry(entry):
+        file = TextIOWrapper(entry)
+        games = []
+        firstNames = []
+        lastNames = []
+        flag = False
+        for line in file:
+            if line[0] == '-':
+                flag = True
+            elif flag and line.strip() == "":
+                break
+            elif flag:
+                if line.split()[2].isnumeric():
+                    raise ValidationError(_('Error: A player is missing a first or last name'))
+                firstNames.append(line.split()[1])
+                lastNames.append(line.split()[2])
+                games.append(line[line.find('|') + 1 : line.rfind('|')].split())
+                if len(games) > 1:
+                    if len(games[-1]) != len(games[-2]):
+                        raise ValidationError(_('Error: Unequal amount of games per row, please fix the file or get another output from Vega Chess'))
+
+        wins = losses = 0
+        for i in range(len(games)):
+            for j in range(len(games[i])):
+                if games[i][j][0] == '+':
+                    if games[i][j][1:] != "BYE":
+                        wins += 1
+                elif games[i][j][0] == '-' and games[i][j][1] != '-':
+                    losses += 1
+        if wins != losses:
+            raise ValidationError(_('Error: Wins and losses dont add up, please fix the file or get another output from Vega Chess'))
+
+        file.detach()
+
+
     tournament_date = models.DateField(auto_now=False, auto_now_add=False)
     entry = models.FileField(upload_to='hello.PictureWrapper/bytes/filename/mimetype', validators=[FileTypeValidator(allowed_types=['text/plain']),validate_vega_chess_entry])
 
