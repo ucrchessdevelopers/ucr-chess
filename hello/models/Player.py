@@ -19,7 +19,8 @@ class Player(models.Model):
         self.lastname = self.lastname.lower()
         try:
             testplayer = Player.objects.get(firstname=self.firstname, lastname=self.lastname)
-            raise ValidationError(_('Name is identical to another player'))
+            if testplayer != self:
+                raise ValidationError(_('Name is identical to another player'))
         except Player.DoesNotExist:
             print()
 

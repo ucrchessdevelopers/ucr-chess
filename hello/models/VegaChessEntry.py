@@ -41,8 +41,6 @@ def validate_vega_chess_entry(entry):
                 losses += 1
     if wins != losses:
         raise ValidationError(_('Error: Wins and losses dont add up, please fix the file or get another output from Vega Chess'))
-    entry.close()
-    entry.open()
 
 class VegaChessEntry(models.Model):
     tournament_date = models.DateField(auto_now=False, auto_now_add=False)
@@ -54,7 +52,7 @@ class VegaChessEntry(models.Model):
     )
 
     class Meta:
-        verbose_name_plural = "vega chess entries"
+        verbose_name_plural = "Vega Chess Entries"
 
 
     def save(self, *args, **kwargs):
