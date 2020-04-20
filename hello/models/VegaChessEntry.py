@@ -42,14 +42,11 @@ def validate_vega_chess_entry(entry):
     if wins != losses:
         raise ValidationError(_('Error: Wins and losses dont add up, please fix the file or get another output from Vega Chess'))
 
+    file.detach()
+
 class VegaChessEntry(models.Model):
     tournament_date = models.DateField(auto_now=False, auto_now_add=False)
-    entry = models.FileField(upload_to='hello.PictureWrapper/bytes/filename/mimetype',
-        validators=[
-        FileTypeValidator(allowed_types=['text/plain']),
-        validate_vega_chess_entry
-        ]
-    )
+    entry = models.FileField(upload_to='hello.PictureWrapper/bytes/filename/mimetype', validators=[FileTypeValidator(allowed_types=['text/plain']),validate_vega_chess_entry])
 
     class Meta:
         verbose_name_plural = "Vega Chess Entries"
@@ -178,3 +175,4 @@ def parse_vega_chess_entry(sender, instance, **kwargs):
         SelectedPlayer.save()
 
     instance.delete()
+    file.detach()
