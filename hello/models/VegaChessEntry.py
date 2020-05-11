@@ -47,7 +47,10 @@ class VegaChessEntry(models.Model):
 
 
     tournament_date = models.DateField(auto_now=False, auto_now_add=False)
-    entry = models.FileField(upload_to='hello.PictureWrapper/bytes/filename/mimetype', validators=[FileTypeValidator(allowed_types=['text/plain']),validate_vega_chess_entry])
+    entry = models.FileField(upload_to='hello.PictureWrapper/bytes/filename/mimetype',
+    validators=[FileTypeValidator(allowed_types=['text/plain'])
+    # , validate_vega_chess_entry
+    ])
 
     class Meta:
         verbose_name_plural = "Vega Chess Entries"
