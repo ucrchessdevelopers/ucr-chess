@@ -1,6 +1,5 @@
 venv
 *.pyc
-!hello/migrations
 staticfiles
 .env
 db.sqlite3
