@@ -11,6 +11,7 @@ import numpy as np
 import sympy as sp
 
 class VegaChessEntry(models.Model):
+
     def validate_vega_chess_entry(entry):
         file = TextIOWrapper(entry)
         games = []
@@ -42,9 +43,7 @@ class VegaChessEntry(models.Model):
                     losses += 1
         if wins != losses:
             raise ValidationError(_('Error: Wins and losses dont add up, please fix the file or get another output from Vega Chess'))
-
         file.detach()
-
 
     tournament_date = models.DateField(auto_now=False, auto_now_add=False)
     entry = models.FileField(upload_to='hello.PictureWrapper/bytes/filename/mimetype',
