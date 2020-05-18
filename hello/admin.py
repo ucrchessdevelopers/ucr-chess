@@ -8,7 +8,7 @@ admin.site.site_header = 'UCR Chess Backend'
 class FPTAdmin(admin.ModelAdmin):
     fields = ['text']
 
-admin.site.register(FrontPageText, FPTAdmin)
+# admin.site.register(FrontPageText, FPTAdmin)
 
 class PlayerAdmin(admin.ModelAdmin):
     list_display = ['firstname', 'lastname', 'rating', 'last_active']
@@ -55,5 +55,5 @@ class LinkButtonAdmin(admin.ModelAdmin):
     ordering = ['order']
     actions = [Increment_Order, Decrement_Order]
 
-admin.site.register(LinkButton, LinkButtonAdmin)
+# admin.site.register(LinkButton, LinkButtonAdmin)
 admin.site.register(VegaChessEntry)

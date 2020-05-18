@@ -6,9 +6,10 @@ from django.contrib.auth.models import User
 
 def index(request):
     images = CarouselImage.objects.all().order_by('order')
-    buttons = LinkButton.objects.all().order_by('order')
-    pageText = FrontPageText.objects.all()
-    return render(request, "index.html", {'CarouselImageData': images, 'LinkButtonData': buttons, 'pageText': pageText})
+    # buttons = LinkButton.objects.all().order_by('order')
+    # pageText = FrontPageText.objects.all()
+    return render(request, "index.html", {'CarouselImageData': images})
+    #, 'LinkButtonData': buttons, 'pageText': pageText})
 
 def rankings(request):
     data = Player.objects.all().order_by('-rating')
