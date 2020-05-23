@@ -13,6 +13,7 @@ mpmath==1.1.0
 numpy==1.18.1
 Pillow==7.0.0
 psycopg2==2.8.4
+python-dotenv==0.13.0
 python-magic==0.4.15
 pytz==2019.3
 six==1.14.0
