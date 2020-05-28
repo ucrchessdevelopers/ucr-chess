@@ -5,8 +5,8 @@ from .models import *
 
 admin.site.site_header = 'UCR Chess Backend'
 
-class FPTAdmin(admin.ModelAdmin):
-    fields = ['text']
+# class FPTAdmin(admin.ModelAdmin):
+#     fields = ['text']
 
 # admin.site.register(FrontPageText, FPTAdmin)
 
@@ -50,10 +50,10 @@ class OfficerAdmin(admin.ModelAdmin):
 
 admin.site.register(Officer, OfficerAdmin)
 
-class LinkButtonAdmin(admin.ModelAdmin):
-    list_display = ['title', 'url', 'order']
-    ordering = ['order']
-    actions = [Increment_Order, Decrement_Order]
+# class LinkButtonAdmin(admin.ModelAdmin):
+#     list_display = ['title', 'url', 'order']
+#     ordering = ['order']
+#     actions = [Increment_Order, Decrement_Order]
 
 # admin.site.register(LinkButton, LinkButtonAdmin)
 admin.site.register(VegaChessEntry)

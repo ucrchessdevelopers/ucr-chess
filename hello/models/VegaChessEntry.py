@@ -125,7 +125,8 @@ def parse_vega_chess_entry(sender, instance, **kwargs):
             SelectedPlayer = Player.objects.get(firstname=fn, lastname=ln)
 
         except Player.DoesNotExist:
-            SelectedPlayer = Player.objects.create(firstname=fn, lastname=ln)
+            SelectedPlayer = Player.objects.create(firstname=fn, lastname=ln)#, last_active=instance.tournament_date)
+            print(i)
 
         ratings.append(SelectedPlayer.rating)
 
