@@ -18,11 +18,11 @@ import dotenv
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-# dotenv_file = os.path.join(BASE_DIR, ".env")
-# if os.path.isfile(dotenv_file):
-#     dotenv.load_dotenv(dotenv_file)
-# else:
-#     conn = psycopg2.connect(os.environ['DATABASE_URL'], sslmode='require')
+dotenv_file = os.path.join(BASE_DIR, ".env")
+if os.path.isfile(dotenv_file):
+    dotenv.load_dotenv(dotenv_file)
+else:
+    conn = psycopg2.connect(os.environ['DATABASE_URL'], sslmode='require')
 
 SECRET_KEY = "CHANGE_ME!!!! (P.S. the SECRET_KEY environment variable will be used, if set, instead)."
 
@@ -78,29 +78,15 @@ TEMPLATE_LOADERS = [
 WSGI_APPLICATION = "gettingstarted.wsgi.application"
 
 DATABASES = {}
-DATABASES['default'] = {
-         "ENGINE" : "django.db.backends.postgresql",
-         "NAME": "ucrchessdb",
-         "USER": "dbuser",
-         "PASSWORD": "dbpass13",
-         "HOST": 'localhost',
-         "PORT": '5432'
-     }# = dj_database_url.config(conn_max_age=600, ssl_require=True)
 
-# DATABASES = {
-#      # "default": {
-#      #     "ENGINE" : "django.db.backends.postgresql",
-#      #     "NAME": "ucrchessdb",
-#      #     "USER": "dbuser",
-#      #     "PASSWORD": "dbpass13",
-#      #     "HOST": 'localhost',
-#      #     "PORT": '5432'
-#      # }
-#     "default": {
-#        "ENGINE" : "django.db.backends.sqlite3",
-#        "NAME": os.path.join(BASE_DIR, "db.sqlite3")
-#     }
-# }
+# DATABASES['default'] = {
+#          "ENGINE" : "django.db.backends.postgresql",
+#          "NAME": "ucrchessdb",
+#          "USER": "dbuser",
+#          "PASSWORD": "dbpass13",
+#          "HOST": 'localhost',
+#          "PORT": '5432'
+#      }# = dj_database_url.config(conn_max_age=600, ssl_require=True)
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -132,4 +118,4 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
 
 django_heroku.settings(locals())
-# del DATABASES['default']['OPTIONS']['sslmode']
+del DATABASES['default']['OPTIONS']['sslmode']
