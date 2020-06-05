@@ -12,8 +12,7 @@ class Officer(models.Model):
     position = models.CharField(max_length = 40)
     email = models.EmailField(max_length = 40)
     about = models.CharField(max_length = 200, help_text="Max 200 Characters")
-    testField = models.IntegerField(default = 47, blank = True)
-    
+
     def save(self, *args, **kwargs):
         delete_file_if_needed(self, 'picture')
         super(Officer, self).save(*args, **kwargs)
