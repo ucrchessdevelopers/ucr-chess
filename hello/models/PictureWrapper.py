@@ -5,7 +5,6 @@ from django.utils.translation import gettext_lazy as _
 # from django.core.files.storage import default_storage as storage
 
 class PictureWrapper(models.Model):
-
     bytes = models.BinaryField()
     filename = models.CharField(max_length=255)
     mimetype = models.CharField(max_length=50)
