@@ -12,7 +12,6 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.DeleteModel('TestModel'),
         migrations.CreateModel(
             name='CarouselImage',
             fields=[
