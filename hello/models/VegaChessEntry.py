@@ -158,6 +158,7 @@ def parse_vega_chess_entry(sender, instance, **kwargs):
                 ++thePlayer.wins
             else:
                 ++thePlayer.draws
+            thePlayer.save()
 
     provisionalN = np.asarray([True for i in range(len(ratings))])
     ratingsN =  np.asarray(ratings, dtype="float64")
