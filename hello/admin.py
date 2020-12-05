@@ -43,4 +43,4 @@ class OfficerAdmin(admin.ModelAdmin):
 
 admin.site.register(Officer, OfficerAdmin)
 
-admin.site.register(VegaChessEntry)
+# admin.site.register(VegaChessEntry)
