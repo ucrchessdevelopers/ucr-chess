@@ -5,6 +5,7 @@ from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
 
 class Player(models.Model):
+    lichessUser = models.CharField(max_length = 20, help_text="Lichess username", default="")
     firstname = models.CharField(max_length = 20, help_text="FULL FIRST NAME, this is how we pair this entry with previous entries")
     lastname = models.CharField(max_length = 30, help_text="Same as previous field; please make sure entry is correct. These are integral to how we match players to their history")
     rating = models.IntegerField(default=1500)
