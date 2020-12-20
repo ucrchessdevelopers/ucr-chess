@@ -37,15 +37,9 @@
       {% for player in playerData %}
         <div class="row sortable">
           <div class="col-3" style="text-transform:capitalize;">{{ player.firstname }} {{ player.lastname }}</div>
-          {% if player.rating_diff < 0 %}
-            <div class="col-3">{{ player.rating }}<div class="text-danger diffText"> <i class="fas fa-caret-down"></i>{{ player.rating_diff|mul:-1 }}</div></div>
-          {% elif player.rating_diff > 0 %}
-            <div class="col-3">{{ player.rating }}<div class="text-success diffText"> <i class="fas fa-caret-up"></i>{{ player.rating_diff }}</div></div>
-          {% else %}
-            <div class="col-3">{{ player.rating }}<div class="text-secondary diffText"> ‒{{ player.rating_diff }}</div></div>
-          {% endif %}
+          <!-- <div class="col-3">{{ player.rating }}<div class="text-danger diffText"> <i class="fas fa-caret-down"></i>{{ player.rating_diff|mul:-1 }}</div></div> -->
           <div class="col-3">
-            <p class="text-success" style="display: inline-block">{{ player.wins }}</p>
+            <p class="text-success" style="display: inline-block">{{ wins[] }}</p>
             <p style="display: inline-block"> /</p>
             <p class="text-danger" style="display: inline-block">{{ player.losses }}</p>
             <p style="display: inline-block"> /</p>
@@ -54,6 +48,26 @@
           <div class="col-3">{{ player.last_active }}</div>
         </div>
       {% endfor %}
+      <!-- {% for player in playerData %}
+        <div class="row sortable">
+          <div class="col-3" style="text-transform:capitalize;">{{ player.firstname }} {{ player.lastname }}</div>
+          {% if player.rating_diff < 0 %}
+            <div class="col-3">{{ player.rating }}<div class="text-danger diffText"> <i class="fas fa-caret-down"></i>{{ player.rating_diff|mul:-1 }}</div></div>
+          {% elif player.rating_diff > 0 %}
+            <div class="col-3">{{ player.rating }}<div class="text-success diffText"> <i class="fas fa-caret-up"></i>{{ player.rating_diff }}</div></div>
+          {% else %}
+            <div class="col-3">{{ player.rating }}<div class="text-secondary diffText"> ‒{{ player.rating_diff }}</div></div>
+          {% endif %}
+          <div class="col-3">
+            <p class="text-success" style="display: inline-block">{{ wins[] }}</p>
+            <p style="display: inline-block"> /</p>
+            <p class="text-danger" style="display: inline-block">{{ player.losses }}</p>
+            <p style="display: inline-block"> /</p>
+            <p class="text-secondary" style="display: inline-block">{{ player.draws }}</p>
+          </div>
+          <div class="col-3">{{ player.last_active }}</div>
+        </div>
+      {% endfor %} -->
     </div>
 {% endblock %}
 
