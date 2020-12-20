@@ -42,9 +42,9 @@
           <div class="col-3">
             <p class="text-success" style="display: inline-block">{{ playerWins|get_at_index:forloop.counter }}</p>
             <p style="display: inline-block"> /</p>
-            <!-- <p class="text-danger" style="display: inline-block">{{ playerLosses.forloop.counter }}</p>
+            <p class="text-danger" style="display: inline-block">{{ playerLosses|get_at_index:forloop.counter }}</p>
             <p style="display: inline-block"> /</p>
-            <p class="text-secondary" style="display: inline-block">{{ playerDraws.forloop.counter}}</p> -->
+            <p class="text-secondary" style="display: inline-block">{{ playerDraws|get_at_index:forloop.counter}}</p>
           </div>
           <div class="col-3">{{ player.last_active }}</div>
         </div>
