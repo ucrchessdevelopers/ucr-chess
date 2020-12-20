@@ -15,7 +15,7 @@ def oldRankings(request):
 	return render(request, "rankings.html", {'playerData': data, 'userData': users})
 
 def rankings(request):
-	players = Player.objects.all().order_by('-rating')
+	players = Player.objects.all()#.order_by('-rating')
 	cRatings = []
 	bRatings = []
 	wins = []
