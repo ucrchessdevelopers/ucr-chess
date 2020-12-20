@@ -15,13 +15,13 @@ def oldRankings(request):
 	return render(request, "rankings.html", {'playerData': data, 'userData': users})
 
 def getPlayerInfo(playerData, ind, username):
-	requests.get("https://lichess.org/api/user/" + username)
+	x = requests.get("https://lichess.org/api/user/" + username)
 	y = json.loads(x.text)
 	playerData['cRatings'][ind] = y['perfs']['classical']['rating']
 	playerData['bRatings'][ind] = y['perfs']['blitz']['rating']
-	playerData['wins'][ind] = y['count']['wins']
-	playerData['draws'][ind] = y['count']['draws']
-	playerData['losses'][ind] = y['count']['losses']
+	playerData['wins'][ind] = y['count']['win']
+	playerData['draws'][ind] = y['count']['draw']
+	playerData['losses'][ind] = y['count']['loss']
 
 def rankings(request):
 	players = Player.objects.all()
