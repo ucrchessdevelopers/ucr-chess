@@ -24,7 +24,7 @@ def getPlayerInfo(playerData, ind, username):
 	playerData['losses'][ind] = y['count']['losses']
 
 def rankings(request):
-	players = Player.objects.all().order_by('-rating')
+	players = Player.objects.all()
 	# Player.objects.all().delete()
 	# np = Player()
 	# np.firstname = "sa"
